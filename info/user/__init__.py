@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-index_blue = Blueprint('index',__name__)
+user_blue = Blueprint('user', __name__)
 
 from . import views
 

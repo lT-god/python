@@ -1,6 +1,6 @@
-from . import index_blue
+from . import user_blue
 
 
-@index_blue.route('/')
-def index():
-    return 'index導入藍圖最後一邊'
+@user_blue.route('/user')
+def user():
+    return 'user'
