@@ -126,6 +126,9 @@ $(function(){
         $.ajax({
             url:"/passport/login",
             method: "post",
+            headers: {
+                "X-CSRFToken": getCookie("csrf_token")
+            },
             data: JSON.stringify(params),
             contentType: "application/json",
             success: function (resp) {
@@ -182,6 +185,9 @@ $(function(){
         $.ajax({
             url:"/passport/register",
             type: "post",
+            headers: {
+                "X-CSRFToken": getCookie("csrf_token")
+            },
             data: JSON.stringify(params),
             contentType: "application/json",
             success: function (resp) {
@@ -242,6 +248,10 @@ function sendSMSCode() {
         url: "/passport/smscode",
         // 请求方式
         method: "POST",
+        //csrf請求保護
+        headers: {
+                "X-CSRFToken": getCookie("csrf_token")
+            },
         // 请求内容
         data: JSON.stringify(params),
         // 请求内容的数据类型

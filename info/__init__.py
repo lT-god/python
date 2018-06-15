@@ -1,11 +1,13 @@
 import logging
+import os
 from logging.handlers import RotatingFileHandler
 from flask import Flask
 from config import Config,config_data,DevelopmentConfig,ProductionConfig
 from flask_sqlalchemy import SQLAlchemy
 import redis
 from flask_session import Session
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, generate_csrf
+
 ''''
 info.__init__:放整个项目模块里面的所有业务逻辑需要用到的一些值
 項目基本配置
@@ -42,8 +44,19 @@ def create_app(config_name):
 
     global redis_store
     redis_store = redis.StrictRedis(host=class_name.REDIS_HOST,port=class_name.REDIS_PORT,decode_responses= True)
-    # CSRFProtect(app)
     Session(app)
+    CSRFProtect(app)
+
+    @app.after_request
+    def after_request(response):
+        # 調用函數生成csrf_token
+        csrf_token = generate_csrf()
+        response.set_cookie('csrf_token',csrf_token)
+        print(os.getcwd(),'test')
+        return response
+
+
+
 
     # 導入user藍圖並且注冊
     from info.user import user_blue

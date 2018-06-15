@@ -32,11 +32,13 @@
 {#            </div>#}
     {# 判断用户是否登录 #}
             {% if data.user_info %}
-                {# 如果登录，则显示用户信息 #}
+            {# 如果登录，则显示用户信息 #}
                 <div class="user_login fr">
-                    <img src="{% if data.user_info.avatar_url %}{{ data.user_info.avatar_url }}{% else %}../../static/news/images/person01.png{% endif %}" class="lgin_pic">
-                    <a href="#">{{ data.user_info.nick_name }}</a>
-                    <a href="#">退出</a>
+                    <img src="{% if data.user_info.avatar_url %}
+                                  {{ data.user_info.avatar_url }}
+                               {% else %}../../static/news/images/person01.png{% endif %}" class="lgin_pic">
+                    <a href="/user/info" id="nick_name">{{ data.user_info.nick_name }}</a>
+                    <a href="javascript:;" onclick="logout()">退出</a>
                 </div>
             {% else %}
                 {# 如果没有登录，则显示登录注册按钮 #}

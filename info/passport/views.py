@@ -165,13 +165,15 @@ def login():
 '''
 退出
 '''
+
+
 @passport_blue.route('/logout')
 def logout():
     # 退出,清空session裏面的數據
-    session.pop('mobile',None)
-    session.pop('user_id',None)
-    session.pop('nick_name',None)
-    return jsonify(errno=RET.OK,errmsg = '退出成功')
+    session.pop('mobile', None)
+    session.pop('user_id', None)
+    session.pop('nick_name', None)
+    return jsonify(errno=RET.OK, errmsg = '退出成功')
 
 
 
