@@ -154,6 +154,8 @@ def login():
     session['mobile'] =user.mobile
     session['user_id'] = user.id
     session['nick_name'] = user.mobile
+    if user.is_admin == True:
+        session['is_admin'] =True
 
     user.last_login = datetime.now()
     try:
@@ -173,6 +175,7 @@ def logout():
     session.pop('mobile', None)
     session.pop('user_id', None)
     session.pop('nick_name', None)
+    session.pop('is_admin',None)
     return jsonify(errno=RET.OK, errmsg = '退出成功')
 
 

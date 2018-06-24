@@ -1,6 +1,7 @@
 from flask import Blueprint
 
-user_blue = Blueprint('user', __name__)
+
+profile_blue = Blueprint('profile', __name__,url_prefix='/user')
 
 from . import views
 

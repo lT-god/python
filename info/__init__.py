@@ -1,12 +1,16 @@
 import logging
-import os
+
 from logging.handlers import RotatingFileHandler
 from flask import Flask
+from flask import g
+from flask import render_template
+
 from config import Config,config_data,DevelopmentConfig,ProductionConfig
 from flask_sqlalchemy import SQLAlchemy
 import redis
 from flask_session import Session
 from flask_wtf.csrf import CSRFProtect, generate_csrf
+
 
 ''''
 info.__init__:放整个项目模块里面的所有业务逻辑需要用到的一些值
@@ -52,15 +56,15 @@ def create_app(config_name):
         # 調用函數生成csrf_token
         csrf_token = generate_csrf()
         response.set_cookie('csrf_token',csrf_token)
-        print(os.getcwd(),'test')
+
         return response
 
 
 
 
     # 導入user藍圖並且注冊
-    from info.user import user_blue
-    app.register_blueprint(user_blue)
+    from info.user import profile_blue
+    app.register_blueprint(profile_blue)
 
     # 導入index藍圖擯棄注冊
 
@@ -71,5 +75,30 @@ def create_app(config_name):
 
     from info.passport import passport_blue
     app.register_blueprint(passport_blue)
+
+    # 过滤器添加到模板
+    from info.utils.common import do_index_class
+    app.add_template_filter(do_index_class,'index_class')
+
+    # news详情页蓝图注册
+    from info.news import news_blue
+    app.register_blueprint(news_blue)
+
+    # admin管理员蓝图注册
+    from info.admin import admin_blue
+    app.register_blueprint(admin_blue)
+
+    from info.utils.common import user_login_data
+    # 当前的404页面表示全局共有的,所以写到__init__
+    @app.errorhandler(404)
+    @user_login_data
+    def not_fount(e):
+        user = g.user
+        data = {
+            'user_info':user.to_dict() if user else None
+        }
+
+        return render_template('news/404.html',data=data)
+
 
     return app
